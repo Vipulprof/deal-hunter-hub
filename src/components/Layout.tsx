@@ -35,8 +35,16 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Top Bar */}
-      <div className="bg-primary text-primary-foreground text-xs py-1.5 text-center font-medium tracking-wide">
-        ⚡ Compare Prices Across Amazon, Flipkart & More • ✔ Verified Deals • 💸 Save More Every Time
+      <div className="bg-primary text-primary-foreground text-xs py-1.5 font-medium tracking-wide overflow-hidden">
+        <div className="hidden md:block text-center">
+          ⚡ Compare Prices Across Amazon, Flipkart &amp; More • ✔ Verified Deals • 💸 Save More Every Time
+        </div>
+        <div className="md:hidden relative">
+          <div className="flex whitespace-nowrap animate-marquee">
+            <span className="px-4">⚡ Compare Prices Across Amazon, Flipkart &amp; More • ✔ Verified Deals • 💸 Save More Every Time</span>
+            <span className="px-4">⚡ Compare Prices Across Amazon, Flipkart &amp; More • ✔ Verified Deals • 💸 Save More Every Time</span>
+          </div>
+        </div>
       </div>
 
       {/* Header */}
