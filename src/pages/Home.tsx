@@ -1,7 +1,7 @@
 import HeroBanner from "@/components/HeroBanner";
 import SectionHeader from "@/components/SectionHeader";
 import ProductCard from "@/components/ProductCard";
-import { products, categories } from "@/data/products";
+import { products, categories, stores } from "@/data/products";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
@@ -96,6 +96,64 @@ export default function Home() {
           {recommended.map((p, i) => (
             <ProductCard key={p.id} product={p} index={i} />
           ))}
+        </div>
+      </section>
+
+      {/* All Platforms */}
+      <section className="container pb-16">
+        <SectionHeader 
+          title="👉 Shop Across Top Platforms" 
+          subtitle="Compare and shop from trusted stores in one place" 
+        />
+        <div className="hidden md:grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+          {stores.map((store, i) => (
+            <Link
+              key={store.id}
+              to={`/stores`}
+              className="group"
+            >
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.05 }}
+                className="bg-card border rounded-2xl p-6 flex flex-col items-center gap-4 hover:shadow-lg hover:scale-105 transition-all duration-300 cursor-pointer"
+              >
+                <div className="w-20 h-20 flex items-center justify-center">
+                  <span className="text-4xl">{store.logo.includes('http') ? '🛍️' : store.logo}</span>
+                </div>
+                <div className="text-center">
+                  <h3 className="font-semibold text-sm mb-1">{store.name}</h3>
+                  <p className="text-xs text-muted-foreground line-clamp-2">{store.description.split('.')[0]}</p>
+                </div>
+              </motion.div>
+            </Link>
+          ))}
+        </div>
+        <div className="flex md:hidden gap-4 overflow-x-auto pb-2 scrollbar-none">
+          {stores.map((store, i) => (
+            <Link
+              key={store.id}
+              to={`/stores`}
+              className="shrink-0 w-[140px] group"
+            >
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.05 }}
+                className="bg-card border rounded-2xl p-4 flex flex-col items-center gap-3 hover:shadow-lg transition-all duration-300"
+              >
+                <div className="w-16 h-16 flex items-center justify-center">
+                  <span className="text-3xl">{store.logo.includes('http') ? '🛍️' : store.logo}</span>
+                </div>
+                <h3 className="font-semibold text-xs text-center">{store.name}</h3>
+              </motion.div>
+            </Link>
+          ))}
+        </div>
+        <div className="flex items-center justify-center gap-4 mt-8 text-xs text-muted-foreground">
+          <span className="flex items-center gap-1">✔ Trusted Platforms</span>
+          <span className="flex items-center gap-1">✔ Verified Links</span>
         </div>
       </section>
     </div>
