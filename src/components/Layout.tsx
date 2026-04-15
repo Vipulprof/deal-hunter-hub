@@ -51,7 +51,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
               <ShoppingBag className="w-4 h-4 text-primary-foreground" />
             </div>
-            <span className="font-heading font-bold text-xl text-foreground">DealHunt</span>
+            <span className="font-heading font-bold text-xl text-foreground">ShopOnGo</span>
           </Link>
 
           {/* Desktop Nav */}
@@ -146,7 +146,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
                 <ShoppingBag className="w-4 h-4 text-primary-foreground" />
               </div>
-              <span className="font-heading font-bold text-lg">DealHunt</span>
+              <span className="font-heading font-bold text-lg">ShopOnGo</span>
             </div>
             <p className="text-sm opacity-70">Find the best deals across all your favorite stores in one place.</p>
           </div>
@@ -177,7 +177,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         </div>
         <div className="border-t border-background/10">
           <div className="container py-4 text-center text-sm opacity-50">
-            © 2026 DealHunt. All rights reserved. We earn commissions from partner stores.
+            © 2026 ShopOnGo. All rights reserved. We earn commissions from partner stores.
           </div>
         </div>
       </footer>
