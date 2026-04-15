@@ -163,7 +163,7 @@ export default function MagicAssistant() {
     <div className="container py-4 sm:py-6 max-w-2xl flex flex-col" style={{ height: "calc(100vh - 80px)" }}>
       {/* Header */}
       <div className="flex items-center gap-3 mb-3">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-blue-700 flex items-center justify-center shrink-0">
+        <div className="w-10 h-10 rounded-xl <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shrink-0">">
           <Sparkles className="w-5 h-5 text-primary-foreground" />
         </div>
         <div className="flex-1 min-w-0">
@@ -183,7 +183,7 @@ export default function MagicAssistant() {
         {/* Welcome screen */}
         {step === 0 && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col items-center justify-center h-full text-center py-8">
-            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", delay: 0.2 }} className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-blue-700 flex items-center justify-center mb-5">
+            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", delay: 0.2 }} className="w-20 h-20 rounded-2xl <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", delay: 0.2 }} className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center mb-5">">
               <MessageCircle className="w-10 h-10 text-primary-foreground" />
             </motion.div>
             <motion.h2 initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4 }} className="font-heading font-bold text-2xl mb-2">
@@ -287,7 +287,7 @@ export default function MagicAssistant() {
                     {msg.type === "success" && (
                       <div className="text-center py-4">
                         <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring" }}>
-                          <CheckCircle className="w-14 h-14 text-green-500 mx-auto mb-3" />
+                          <CheckCircle className="w-14 h-14 <CheckCircle className="w-14 h-14 text-success mx-auto mb-3" />" />
                         </motion.div>
                         <h3 className="font-heading font-bold text-lg mb-1">We're finding the best deals for you 🎯</h3>
                         <p className="text-xs text-muted-foreground mb-4">You'll receive personalized deals within 24 hours.</p>
