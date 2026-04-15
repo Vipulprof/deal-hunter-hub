@@ -12,7 +12,7 @@ type Message = {
   id: string;
   sender: "bot" | "user";
   content: string;
-  type?: "text" | "options" | "budget" | "image-upload" | "contact" | "summary" | "success";
+  type?: "text" | "options" | "budget" | "image-upload" | "contact" | "summary" | "success" | "other-input";
   options?: { label: string; icon?: React.ReactNode; value: string }[];
   budgetOptions?: string[];
   summary?: { product: string; budget: string; requirements: string; contact: string };
@@ -46,6 +46,7 @@ export default function MagicAssistant() {
   const [typing, setTyping] = useState(false);
   const [textInput, setTextInput] = useState("");
   const [contactType, setContactType] = useState<"email" | "whatsapp" | null>(null);
+  const [waitingOtherInput, setWaitingOtherInput] = useState(false);
   const [userData, setUserData] = useState({ product: "", budget: "", requirements: "", contact: "" });
   const scrollRef = useRef<HTMLDivElement>(null);
   const userScrolledRef = useRef(false);
@@ -95,11 +96,36 @@ export default function MagicAssistant() {
 
   // Step 1: Product selection
   const handleProductSelect = (value: string, label: string) => {
+    if (value === "other") {
+      addUserMessage(label);
+      setWaitingOtherInput(true);
+      addBotMessage({
+        content: "Got it 👍 What product are you looking for?",
+        type: "other-input",
+      });
+      return;
+    }
     addUserMessage(label);
     setUserData(prev => ({ ...prev, product: label }));
     setStep(2);
     addBotMessage({
       content: `Great choice! What's your budget for ${label.toLowerCase()}? 💰`,
+      type: "budget",
+      budgetOptions: BUDGET_OPTIONS,
+    });
+  };
+
+  // Step 1.5: Other product text input
+  const handleOtherProductSubmit = () => {
+    const val = textInput.trim();
+    if (!val) return;
+    addUserMessage(val);
+    setUserData(prev => ({ ...prev, product: val }));
+    setTextInput("");
+    setWaitingOtherInput(false);
+    setStep(2);
+    addBotMessage({
+      content: `Great! What's your budget for ${val.toLowerCase()}? 💰`,
       type: "budget",
       budgetOptions: BUDGET_OPTIONS,
     });

@@ -36,8 +36,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <div className="min-h-screen flex flex-col">
       {/* Top Bar */}
       <div className="bg-primary text-primary-foreground text-xs py-1.5 text-center font-medium tracking-wide">
-        <Zap className="inline w-3 h-3 mr-1" />
-        Free shipping on orders over ₹499 • Verified deals from trusted stores
+        ⚡ Compare Prices Across Amazon, Flipkart & More • ✔ Verified Deals • 💸 Save More Every Time
       </div>
 
       {/* Header */}
