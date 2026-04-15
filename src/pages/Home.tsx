@@ -21,7 +21,7 @@ export default function Home() {
       {/* Categories */}
       <section className="container pb-10">
         <SectionHeader title="Shop by Category" link="/categories" />
-        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
+        <div className="flex gap-5 overflow-x-auto pb-2 scrollbar-none justify-start sm:justify-center">
           {categories.map((cat, i) => (
             <Link
               key={cat.id}
@@ -32,12 +32,17 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="w-20 sm:w-24 flex flex-col items-center gap-2"
+                className="w-[72px] sm:w-[88px] flex flex-col items-center gap-2"
               >
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-accent flex items-center justify-center text-2xl sm:text-3xl group-hover:scale-110 group-hover:bg-primary/10 transition-all">
-                  {cat.icon}
+                <div className="w-[56px] h-[56px] sm:w-[68px] sm:h-[68px] rounded-full border border-border/60 bg-card shadow-sm overflow-hidden flex items-center justify-center group-hover:shadow-md group-hover:border-primary/40 transition-all duration-300">
+                  <img
+                    src={cat.image}
+                    alt={cat.name}
+                    className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-300"
+                    loading="lazy"
+                  />
                 </div>
-                <span className="text-xs font-medium text-center">{cat.name}</span>
+                <span className="text-[11px] sm:text-xs font-medium text-center leading-tight text-muted-foreground group-hover:text-foreground transition-colors">{cat.name}</span>
               </motion.div>
             </Link>
           ))}
