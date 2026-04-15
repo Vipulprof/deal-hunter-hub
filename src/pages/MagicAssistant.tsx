@@ -343,7 +343,9 @@ export default function MagicAssistant() {
                         <div className="bg-muted/50 rounded-xl p-3 space-y-1.5 border border-border/30">
                           <div className="flex justify-between"><span className="text-muted-foreground">Product</span><span className="font-medium">{msg.summary.product}</span></div>
                           <div className="flex justify-between"><span className="text-muted-foreground">Budget</span><span className="font-medium">{msg.summary.budget}</span></div>
-                          <div className="flex justify-between"><span className="text-muted-foreground">Preference</span><span className="font-medium">{msg.summary.requirements}</span></div>
+                          {!isOtherFlowRef.current && (
+                            <div className="flex justify-between"><span className="text-muted-foreground">Preference</span><span className="font-medium">{msg.summary.requirements}</span></div>
+                          )}
                           <div className="flex justify-between"><span className="text-muted-foreground">Contact</span><span className="font-medium">{msg.summary.contact}</span></div>
                         </div>
                         <button onClick={handleConfirm} className="w-full py-2.5 bg-primary text-primary-foreground font-semibold rounded-xl text-xs flex items-center justify-center gap-1.5 hover:scale-[1.02] transition-transform">
