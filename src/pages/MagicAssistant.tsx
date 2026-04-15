@@ -47,6 +47,7 @@ export default function MagicAssistant() {
   const [textInput, setTextInput] = useState("");
   const [contactType, setContactType] = useState<"email" | "whatsapp" | null>(null);
   const [waitingOtherInput, setWaitingOtherInput] = useState(false);
+  const isOtherFlowRef = useRef(false);
   const [userData, setUserData] = useState({ product: "", budget: "", requirements: "", contact: "" });
   const scrollRef = useRef<HTMLDivElement>(null);
   const userScrolledRef = useRef(false);
@@ -99,6 +100,7 @@ export default function MagicAssistant() {
     if (value === "other") {
       addUserMessage(label);
       setWaitingOtherInput(true);
+      isOtherFlowRef.current = true;
       addBotMessage({
         content: "Got it 👍 What product are you looking for?",
         type: "other-input",
@@ -135,12 +137,23 @@ export default function MagicAssistant() {
   const handleBudgetSelect = (budget: string) => {
     addUserMessage(budget);
     setUserData(prev => ({ ...prev, budget }));
-    setStep(3);
-    addBotMessage({
-      content: "Any specific requirements or preferences? 🎯",
-      type: "options",
-      options: REQUIREMENT_OPTIONS.map(o => ({ ...o, icon: undefined })),
-    });
+
+    if (isOtherFlowRef.current) {
+      // Skip requirements, go to image step
+      setUserData(prev => ({ ...prev, requirements: "No specific preference" }));
+      setStep(4);
+      addBotMessage({
+        content: "Do you have a reference image of the product? 📸 (optional)",
+        type: "image-upload",
+      });
+    } else {
+      setStep(3);
+      addBotMessage({
+        content: "Any specific requirements or preferences? 🎯",
+        type: "options",
+        options: REQUIREMENT_OPTIONS.map(o => ({ ...o, icon: undefined })),
+      });
+    }
   };
 
   // Step 3: Requirements
