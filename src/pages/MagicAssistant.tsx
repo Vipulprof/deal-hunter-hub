@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import { useToast } from "@/hooks/use-toast";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Sparkles, Send, CheckCircle, Upload, SkipForward,
@@ -47,12 +48,27 @@ export default function MagicAssistant() {
   const [contactType, setContactType] = useState<"email" | "whatsapp" | null>(null);
   const [userData, setUserData] = useState({ product: "", budget: "", requirements: "", contact: "" });
   const scrollRef = useRef<HTMLDivElement>(null);
+  const userScrolledRef = useRef(false);
+  const { toast } = useToast();
 
   const totalSteps = 5;
   const progressPercent = Math.min((step / totalSteps) * 100, 100);
 
   const scrollToBottom = useCallback(() => {
+    if (userScrolledRef.current) return;
     setTimeout(() => scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" }), 100);
+  }, []);
+
+  // Detect user manual scroll
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const handleScroll = () => {
+      const isAtBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
+      userScrolledRef.current = !isAtBottom;
+    };
+    el.addEventListener("scroll", handleScroll);
+    return () => el.removeEventListener("scroll", handleScroll);
   }, []);
 
   const addBotMessage = useCallback((msg: Omit<Message, "id" | "sender">, delay = 800) => {
@@ -132,16 +148,30 @@ export default function MagicAssistant() {
   };
 
   // Step 5: Contact
+  const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  const validatePhone = (phone: string) => /^[6-9]\d{9}$/.test(phone.replace(/[\s\-+]/g, "").replace(/^91/, ""));
+
   const handleContactSubmit = () => {
-    if (!textInput.trim()) return;
-    const contactInfo = `${contactType === "email" ? "📧" : "📱"} ${textInput}`;
+    const val = textInput.trim();
+    if (!val) return;
+
+    if (contactType === "email" && !validateEmail(val)) {
+      toast({ title: "Invalid Email", description: "Please enter a valid email address.", variant: "destructive" });
+      return;
+    }
+    if (contactType === "whatsapp" && !validatePhone(val)) {
+      toast({ title: "Invalid Number", description: "Please enter a valid 10-digit Indian mobile number.", variant: "destructive" });
+      return;
+    }
+
+    const contactInfo = `${contactType === "email" ? "📧" : "📱"} ${val}`;
     addUserMessage(contactInfo);
-    setUserData(prev => ({ ...prev, contact: textInput }));
+    setUserData(prev => ({ ...prev, contact: val }));
     setTextInput("");
     setContactType(null);
     setStep(6);
 
-    const finalData = { ...userData, contact: textInput };
+    const finalData = { ...userData, contact: val };
     addBotMessage({
       content: "Here's a summary of your request:",
       type: "summary",
