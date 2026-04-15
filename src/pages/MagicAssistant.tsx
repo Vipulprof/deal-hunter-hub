@@ -280,9 +280,9 @@ export default function MagicAssistant() {
         {/* Messages */}
         <AnimatePresence>
           {messages.map((msg) => (
-            <motion.div key={msg.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}>
+            <motion.div key={msg.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className={`flex ${msg.type === "success" ? "justify-center" : msg.sender === "user" ? "justify-end" : "justify-start"}`}>
               {msg.sender === "bot" ? (
-                <div className="max-w-[85%] space-y-2">
+                <div className={`space-y-2 ${msg.type === "success" ? "w-full max-w-md" : "max-w-[85%]"}`}>
                   <div className="bg-card border border-border/50 rounded-2xl rounded-tl-md px-4 py-3 shadow-sm">
                     {msg.content && <p className="text-sm">{msg.content}</p>}
 
