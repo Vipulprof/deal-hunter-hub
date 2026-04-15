@@ -176,7 +176,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         </div>
         <div className="border-t border-background/10">
           <div className="container py-4 text-center text-sm opacity-50">
-            © 2026 ShopOnGo. All rights reserved. We earn commissions from partner stores.
+            © 2026 ShopOnGo. All rights reserved.
           </div>
         </div>
       </footer>
