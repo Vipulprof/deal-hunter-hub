@@ -98,7 +98,7 @@ export default function Home() {
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
-          className="bg-gradient-to-r from-primary to-blue-700 rounded-2xl p-8 sm:p-12 text-primary-foreground flex flex-col sm:flex-row items-center justify-between gap-6"
+          className="gradient-hero rounded-2xl p-8 sm:p-12 text-primary-foreground flex flex-col sm:flex-row items-center justify-between gap-6 shadow-glow"
         >
           <div>
             <h3 className="font-heading font-bold text-2xl mb-2">Can't find what you need? ✨</h3>
