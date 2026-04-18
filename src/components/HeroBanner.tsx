@@ -64,7 +64,7 @@ export default function HeroBanner() {
           {slide.subtitle}
         </p>
         <Link
-          to="/hot-deals"
+          to={slide.title.toLowerCase().includes("magic") ? "/magic-assistant" : "/hot-deals"}
           className="inline-flex w-fit items-center px-5 sm:px-6 py-2.5 sm:py-3 bg-secondary text-secondary-foreground font-semibold rounded-xl shadow-md hover:scale-105 transition-transform text-sm"
         >
           {slide.cta}
