@@ -350,6 +350,14 @@ export const bannerSlides = [
     subtitle: "Transform your living space with top picks",
     cta: "View Collection",
     gradient: "from-emerald-600 to-teal-700",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=800",
+    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=1200&q=80",
+  },
+  {
+    id: 4,
+    title: "Meet Your Magic Assistant ✨",
+    subtitle: "AI-powered deal hunter — tell us what you want, we'll find it",
+    cta: "Try Magic Assistant",
+    gradient: "from-purple-600 to-indigo-700",
+    image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=1200&q=80",
   },
 ];
