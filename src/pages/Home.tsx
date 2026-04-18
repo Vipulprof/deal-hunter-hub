@@ -20,23 +20,48 @@ export default function Home() {
 
       {/* Trust strip */}
       <section className="container pb-8">
-        <div className="grid grid-cols-3 gap-2 sm:gap-4 bg-card border border-border/50 rounded-2xl p-3 sm:p-4 shadow-[var(--shadow-card)]">
-          {[
+        {(() => {
+          const items = [
             { icon: "✔", title: "Verified Deals", sub: "Hand-picked daily" },
             { icon: "🏬", title: "Trusted Stores", sub: "Amazon, Flipkart & more" },
             { icon: "💸", title: "No Extra Cost", sub: "Same price, better deals" },
-          ].map((t) => (
-            <div key={t.title} className="flex items-center gap-2 sm:gap-3 px-1">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-primary/10 flex items-center justify-center text-base sm:text-lg shrink-0">
-                {t.icon}
+          ];
+          return (
+            <>
+              {/* Mobile: horizontal scrollable cards */}
+              <div className="sm:hidden flex gap-3 overflow-x-auto scrollbar-none -mx-4 px-4 pb-1 snap-x snap-mandatory">
+                {items.map((t) => (
+                  <div
+                    key={t.title}
+                    className="snap-start shrink-0 w-[78%] bg-card border border-border/50 rounded-2xl p-4 shadow-[var(--shadow-card)] flex items-center gap-3"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center text-lg shrink-0">
+                      {t.icon}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-semibold text-sm text-foreground leading-tight">{t.title}</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">{t.sub}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-              <div className="min-w-0">
-                <p className="font-semibold text-xs sm:text-sm text-foreground leading-tight">{t.title}</p>
-                <p className="text-[10px] sm:text-xs text-muted-foreground truncate">{t.sub}</p>
+              {/* Desktop/tablet: 3-column grid */}
+              <div className="hidden sm:grid grid-cols-3 gap-4 bg-card border border-border/50 rounded-2xl p-4 shadow-[var(--shadow-card)]">
+                {items.map((t) => (
+                  <div key={t.title} className="flex items-center gap-3 px-1">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-lg shrink-0">
+                      {t.icon}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-semibold text-sm text-foreground leading-tight">{t.title}</p>
+                      <p className="text-xs text-muted-foreground truncate">{t.sub}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
-          ))}
-        </div>
+            </>
+          );
+        })()}
       </section>
 
       {/* Categories */}
