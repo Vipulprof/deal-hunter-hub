@@ -1,67 +1,97 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Star, ExternalLink } from "lucide-react";
+import { Star, Flame, Award, TrendingUp } from "lucide-react";
 import type { Product } from "@/data/products";
 
 export default function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
   const savings = product.originalPrice - product.price;
+  const isHotDeal = product.discount >= 40;
+  const isTopDeal = product.dealScore >= 9;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05, duration: 0.3 }}
+      whileHover={{ y: -6 }}
     >
       <Link
         to={`/product/${product.id}`}
-        className="group block bg-card rounded-xl overflow-hidden shadow-[var(--shadow-card)] hover-lift border border-border/50"
+        className="group relative block bg-card rounded-2xl overflow-hidden shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)] border border-border/50 transition-all duration-300 gradient-border"
       >
         {/* Image */}
         <div className="relative aspect-square overflow-hidden bg-muted">
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
             loading="lazy"
           />
-          {product.badge && (
-            <span className="absolute top-3 left-3 px-2.5 py-1 bg-secondary text-secondary-foreground text-xs font-bold rounded-full">
-              {product.badge}
-            </span>
-          )}
-          <span className="absolute top-3 right-3 px-2 py-1 bg-destructive text-destructive-foreground text-xs font-bold rounded-lg">
+
+          {/* Top-left badges */}
+          <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5">
+            {isTopDeal && (
+              <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-bold rounded-full shadow-md">
+                <Award className="w-2.5 h-2.5" /> BEST DEAL
+              </span>
+            )}
+            {product.badge && (
+              <span className="inline-flex items-center gap-1 px-2 py-1 bg-card/90 backdrop-blur text-foreground text-[10px] font-bold rounded-full shadow-sm">
+                {product.badge === "Trending" && <TrendingUp className="w-2.5 h-2.5 text-secondary" />}
+                {product.badge}
+              </span>
+            )}
+          </div>
+
+          {/* Discount */}
+          <span className="absolute top-2.5 right-2.5 px-2 py-1 gradient-deal text-white text-xs font-extrabold rounded-lg shadow-md">
             -{product.discount}%
           </span>
-          {/* Quick view overlay */}
-          <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors flex items-center justify-center">
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-card text-foreground text-xs font-medium px-4 py-2 rounded-full shadow-lg flex items-center gap-1.5">
-              <ExternalLink className="w-3 h-3" /> Quick View
+
+          {/* Hover overlay */}
+          <div className="absolute inset-x-0 bottom-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300 bg-gradient-to-t from-foreground/85 to-transparent p-3">
+            <span className="block text-center text-background text-xs font-semibold">
+              View Best Price →
             </span>
           </div>
         </div>
 
         {/* Info */}
-        <div className="p-4">
-          <p className="text-xs text-muted-foreground mb-1">{product.store} • {product.category}</p>
-          <h3 className="font-medium text-sm leading-snug line-clamp-2 mb-2 group-hover:text-primary transition-colors">
+        <div className="p-3.5">
+          <p className="text-[11px] text-muted-foreground mb-1 font-medium uppercase tracking-wide">
+            {product.store} · {product.category}
+          </p>
+          <h3 className="font-medium text-sm leading-snug line-clamp-2 mb-2 group-hover:text-primary transition-colors min-h-[2.5rem]">
             {product.name}
           </h3>
-          <div className="flex items-baseline gap-2 mb-2">
-            <span className="text-lg font-bold font-heading">₹{product.price.toLocaleString()}</span>
+          <div className="flex items-baseline gap-2 mb-1.5">
+            <span className="text-lg font-extrabold font-heading text-foreground">₹{product.price.toLocaleString()}</span>
             <span className="text-xs text-muted-foreground line-through">₹{product.originalPrice.toLocaleString()}</span>
           </div>
-          <p className="text-xs text-success font-medium mb-2">You save ₹{savings.toLocaleString()}</p>
-          <div className="flex items-center justify-between">
+
+          {/* Savings pill */}
+          <div className="inline-flex items-center gap-1 px-2 py-0.5 bg-success/10 text-success rounded-md mb-2.5">
+            <Flame className="w-3 h-3" />
+            <span className="text-[11px] font-bold">Save ₹{savings.toLocaleString()}</span>
+          </div>
+
+          <div className="flex items-center justify-between pt-2 border-t border-border/40">
             <div className="flex items-center gap-1">
               <Star className="w-3.5 h-3.5 fill-secondary text-secondary" />
-              <span className="text-xs font-medium">{product.rating}</span>
-              <span className="text-xs text-muted-foreground">({product.reviews.toLocaleString()})</span>
+              <span className="text-xs font-semibold">{product.rating}</span>
+              <span className="text-[11px] text-muted-foreground">({product.reviews.toLocaleString()})</span>
             </div>
-            <span className="text-xs font-bold px-2 py-0.5 bg-accent text-accent-foreground rounded-md">
+            <span className="text-[11px] font-bold px-2 py-0.5 bg-accent text-accent-foreground rounded-md">
               {product.dealScore}/10
             </span>
           </div>
         </div>
+
+        {isHotDeal && (
+          <div className="absolute -top-px left-1/2 -translate-x-1/2 px-2.5 py-0.5 bg-destructive text-destructive-foreground text-[9px] font-bold rounded-b-md shadow-sm">
+            🔥 HOT
+          </div>
+        )}
       </Link>
     </motion.div>
   );

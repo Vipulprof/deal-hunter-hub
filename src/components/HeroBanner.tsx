@@ -32,14 +32,23 @@ export default function HeroBanner() {
               alt={bannerSlides[current].title}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/40 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-foreground/90 via-foreground/60 to-foreground/10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-primary/30 via-transparent to-transparent" />
           </div>
           <div className="relative h-full flex flex-col justify-center px-8 sm:px-12 md:px-16 max-w-xl">
+            <motion.span
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ delay: 0.1 }}
+              className="inline-flex w-fit items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/20 backdrop-blur border border-secondary/40 text-secondary text-[11px] font-bold mb-3 uppercase tracking-wider"
+            >
+              ⚡ Limited Time Deals
+            </motion.span>
             <motion.h2
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.15 }}
-              className="font-heading font-bold text-2xl sm:text-3xl md:text-4xl text-background mb-3"
+              className="font-heading font-extrabold text-3xl sm:text-4xl md:text-5xl text-background mb-3 leading-tight"
             >
               {bannerSlides[current].title}
             </motion.h2>
@@ -47,7 +56,7 @@ export default function HeroBanner() {
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.25 }}
-              className="text-background/80 text-sm sm:text-base mb-6"
+              className="text-background/85 text-sm sm:text-base mb-6 max-w-md"
             >
               {bannerSlides[current].subtitle}
             </motion.p>
