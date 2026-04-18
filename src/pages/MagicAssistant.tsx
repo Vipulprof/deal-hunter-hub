@@ -89,7 +89,7 @@ export default function MagicAssistant() {
   const handleStart = () => {
     setStep(1);
     addBotMessage({
-      content: "What are you looking for today? 🛍️",
+      content: "Awesome! Let's find you the perfect deal ✨ What are you shopping for today?",
       type: "options",
       options: PRODUCT_OPTIONS,
     }, 600);
@@ -102,7 +102,7 @@ export default function MagicAssistant() {
       setWaitingOtherInput(true);
       isOtherFlowRef.current = true;
       addBotMessage({
-        content: "Got it 👍 What product are you looking for?",
+        content: "No problem 👍 Tell me what you're looking for — I'll hunt down the best deals for you.",
         type: "other-input",
       });
       return;
@@ -111,7 +111,7 @@ export default function MagicAssistant() {
     setUserData(prev => ({ ...prev, product: label }));
     setStep(2);
     addBotMessage({
-      content: `Great choice! What's your budget for ${label.toLowerCase()}? 💰`,
+      content: `Nice pick! 🎯 What's your budget for a ${label.toLowerCase()}?`,
       type: "budget",
       budgetOptions: BUDGET_OPTIONS,
     });
@@ -127,7 +127,7 @@ export default function MagicAssistant() {
     setWaitingOtherInput(false);
     setStep(2);
     addBotMessage({
-      content: `Great! What's your budget for ${val.toLowerCase()}? 💰`,
+      content: `Got it! 🎯 What's your budget for ${val.toLowerCase()}?`,
       type: "budget",
       budgetOptions: BUDGET_OPTIONS,
     });
@@ -143,13 +143,13 @@ export default function MagicAssistant() {
       setUserData(prev => ({ ...prev, requirements: "No specific preference" }));
       setStep(4);
       addBotMessage({
-        content: "Do you have a reference image of the product? 📸 (optional)",
+        content: "Perfect 💯 Got a reference image? It helps me find an exact match (totally optional)",
         type: "image-upload",
       });
     } else {
       setStep(3);
       addBotMessage({
-        content: "Any specific requirements or preferences? 🎯",
+        content: "Anything specific you care about? Pick what matters most to you 👇",
         type: "options",
         options: REQUIREMENT_OPTIONS.map(o => ({ ...o, icon: undefined })),
       });
@@ -162,7 +162,7 @@ export default function MagicAssistant() {
     setUserData(prev => ({ ...prev, requirements: label }));
     setStep(4);
     addBotMessage({
-      content: "Do you have a reference image of the product? 📸 (optional)",
+      content: "Great! 📸 Got a reference image? It helps me find an exact match (totally optional)",
       type: "image-upload",
     });
   };
@@ -172,7 +172,7 @@ export default function MagicAssistant() {
     addUserMessage("Skipped image upload");
     setStep(5);
     addBotMessage({
-      content: "Almost done! Where should we send your best deals? 📩",
+      content: "Almost there! 🎉 Where should I send your handpicked deals?",
       type: "contact",
     });
   };
@@ -181,7 +181,7 @@ export default function MagicAssistant() {
     addUserMessage("📷 Image uploaded");
     setStep(5);
     addBotMessage({
-      content: "Nice! Where should we send your best deals? 📩",
+      content: "Awesome, got it! 🎉 Where should I send your handpicked deals?",
       type: "contact",
     });
   };

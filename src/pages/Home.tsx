@@ -14,8 +14,29 @@ export default function Home() {
   return (
     <div>
       {/* Hero */}
-      <section className="container pt-6 pb-8">
+      <section className="container pt-6 pb-4">
         <HeroBanner />
+      </section>
+
+      {/* Trust strip */}
+      <section className="container pb-8">
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 bg-card border border-border/50 rounded-2xl p-3 sm:p-4 shadow-[var(--shadow-card)]">
+          {[
+            { icon: "✔", title: "Verified Deals", sub: "Hand-picked daily" },
+            { icon: "🏬", title: "Trusted Stores", sub: "Amazon, Flipkart & more" },
+            { icon: "💸", title: "No Extra Cost", sub: "Same price, better deals" },
+          ].map((t) => (
+            <div key={t.title} className="flex items-center gap-2 sm:gap-3 px-1">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-primary/10 flex items-center justify-center text-base sm:text-lg shrink-0">
+                {t.icon}
+              </div>
+              <div className="min-w-0">
+                <p className="font-semibold text-xs sm:text-sm text-foreground leading-tight">{t.title}</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground truncate">{t.sub}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </section>
 
       {/* Categories */}
@@ -51,7 +72,7 @@ export default function Home() {
 
       {/* Trending */}
       <section className="container pb-10">
-        <SectionHeader title="🔥 Trending Now" subtitle="Most popular picks today" link="/hot-deals" />
+        <SectionHeader title="🔥 Trending Now" subtitle="120+ shoppers viewed these today" link="/hot-deals" />
         <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
           {trending.map((p, i) => (
             <div key={p.id} className="shrink-0 w-[220px] sm:w-[260px]">

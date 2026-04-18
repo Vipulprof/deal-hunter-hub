@@ -31,7 +31,7 @@ export default function ProductCard({ product, index = 0 }: { product: Product; 
           {/* Top-left badges */}
           <div className="absolute top-2.5 left-2.5 flex flex-col gap-1.5">
             {isTopDeal && (
-              <span className="inline-flex items-center gap-1 px-2 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[10px] font-bold rounded-full shadow-md">
+              <span className="inline-flex items-center gap-1 px-2 py-1 gradient-deal text-white text-[10px] font-bold rounded-full shadow-md">
                 <Award className="w-2.5 h-2.5" /> BEST DEAL
               </span>
             )}
