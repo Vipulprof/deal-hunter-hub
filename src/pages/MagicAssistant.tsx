@@ -29,14 +29,39 @@ const PRODUCT_OPTIONS = [
 
 const BUDGET_OPTIONS = ["Under ₹1,000", "₹1,000 - ₹5,000", "₹5,000 - ₹15,000", "₹15,000 - ₹30,000", "₹30,000+"];
 
-const REQUIREMENT_OPTIONS = [
-  { label: "Best Camera", value: "camera" },
-  { label: "Long Battery", value: "battery" },
-  { label: "Gaming", value: "gaming" },
-  { label: "Brand Specific", value: "brand" },
-  { label: "Lightweight", value: "lightweight" },
-  { label: "No Preference", value: "none" },
-];
+const REQUIREMENTS_BY_CATEGORY: Record<string, { label: string; value: string }[]> = {
+  smartphone: [
+    { label: "Best Camera", value: "camera" },
+    { label: "Long Battery", value: "battery" },
+    { label: "Gaming", value: "gaming" },
+    { label: "Brand Specific", value: "brand" },
+  ],
+  laptop: [
+    { label: "High Performance", value: "performance" },
+    { label: "Long Battery", value: "battery" },
+    { label: "Gaming", value: "gaming" },
+    { label: "Lightweight", value: "lightweight" },
+  ],
+  shoes: [
+    { label: "Comfortable", value: "comfortable" },
+    { label: "Running / Sports", value: "sports" },
+    { label: "Casual Wear", value: "casual" },
+    { label: "Lightweight", value: "lightweight" },
+    { label: "Brand", value: "brand" },
+  ],
+  clothing: [
+    { label: "Size", value: "size" },
+    { label: "Color", value: "color" },
+    { label: "Style (Casual/Formal)", value: "style" },
+    { label: "Brand", value: "brand" },
+  ],
+  watch: [
+    { label: "Smartwatch", value: "smartwatch" },
+    { label: "Analog", value: "analog" },
+    { label: "Fitness Tracking", value: "fitness" },
+    { label: "Battery Life", value: "battery" },
+  ],
+};
 
 const uid = () => Math.random().toString(36).slice(2, 9);
 
