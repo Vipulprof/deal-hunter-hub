@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
+import "./SectionHeader.css";
 
 export default function SectionHeader({ title, subtitle, link, linkLabel = "View All" }: {
   title: string;
@@ -8,14 +9,14 @@ export default function SectionHeader({ title, subtitle, link, linkLabel = "View
   linkLabel?: string;
 }) {
   return (
-    <div className="flex items-end justify-between mb-6">
+    <div className="section-header">
       <div>
-        <h2 className="font-heading font-bold text-xl sm:text-2xl">{title}</h2>
-        {subtitle && <p className="text-sm text-muted-foreground mt-1">{subtitle}</p>}
+        <h2 className="section-header__title">{title}</h2>
+        {subtitle && <p className="section-header__subtitle">{subtitle}</p>}
       </div>
       {link && (
-        <Link to={link} className="text-sm font-medium text-primary hover:underline flex items-center gap-0.5 shrink-0">
-          {linkLabel} <ChevronRight className="w-4 h-4" />
+        <Link to={link} className="section-header__link">
+          {linkLabel} <ChevronRight className="section-header__link-icon" />
         </Link>
       )}
     </div>
