@@ -388,8 +388,8 @@ export default function MagicAssistant() {
                         <div className="bg-muted/50 rounded-xl p-3 space-y-1.5 border border-border/30">
                           <div className="flex justify-between"><span className="text-muted-foreground">Product</span><span className="font-medium">{msg.summary.product}</span></div>
                           <div className="flex justify-between"><span className="text-muted-foreground">Budget</span><span className="font-medium">{msg.summary.budget}</span></div>
-                          {!isOtherFlowRef.current && (
-                            <div className="flex justify-between"><span className="text-muted-foreground">Preference</span><span className="font-medium">{msg.summary.requirements}</span></div>
+                          {msg.summary.requirements && (
+                            <div className="flex justify-between gap-3"><span className="text-muted-foreground shrink-0">Preference</span><span className="font-medium text-right">{msg.summary.requirements}</span></div>
                           )}
                           <div className="flex justify-between"><span className="text-muted-foreground">Contact</span><span className="font-medium">{msg.summary.contact}</span></div>
                         </div>
