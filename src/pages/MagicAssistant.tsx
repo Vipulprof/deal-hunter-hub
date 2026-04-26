@@ -72,6 +72,8 @@ export default function MagicAssistant() {
   const [textInput, setTextInput] = useState("");
   const [contactType, setContactType] = useState<"email" | "whatsapp" | null>(null);
   const [waitingOtherInput, setWaitingOtherInput] = useState(false);
+  const [waitingRequirementInput, setWaitingRequirementInput] = useState(false);
+  const [productValue, setProductValue] = useState<string>("");
   const isOtherFlowRef = useRef(false);
   const [userData, setUserData] = useState({ product: "", budget: "", requirements: "", contact: "" });
   const scrollRef = useRef<HTMLDivElement>(null);
