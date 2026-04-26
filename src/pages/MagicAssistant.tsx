@@ -128,6 +128,7 @@ export default function MagicAssistant() {
       addUserMessage(label);
       setWaitingOtherInput(true);
       isOtherFlowRef.current = true;
+      setProductValue("other");
       addBotMessage({
         content: "No problem 👍 Tell me what you're looking for — I'll hunt down the best deals for you.",
         type: "other-input",
@@ -135,6 +136,7 @@ export default function MagicAssistant() {
       return;
     }
     addUserMessage(label);
+    setProductValue(value);
     setUserData(prev => ({ ...prev, product: label }));
     setStep(2);
     addBotMessage({
@@ -164,23 +166,39 @@ export default function MagicAssistant() {
   const handleBudgetSelect = (budget: string) => {
     addUserMessage(budget);
     setUserData(prev => ({ ...prev, budget }));
+    setStep(3);
 
-    if (isOtherFlowRef.current) {
-      // Skip requirements, go to image step
-      setUserData(prev => ({ ...prev, requirements: "No specific preference" }));
-      setStep(4);
-      addBotMessage({
-        content: "Perfect 💯 Got a reference image? It helps me find an exact match (totally optional)",
-        type: "image-upload",
-      });
-    } else {
-      setStep(3);
+    const categoryOptions = REQUIREMENTS_BY_CATEGORY[productValue];
+
+    if (categoryOptions) {
       addBotMessage({
         content: "Anything specific you care about? Pick what matters most to you 👇",
         type: "options",
-        options: REQUIREMENT_OPTIONS.map(o => ({ ...o, icon: undefined })),
+        options: categoryOptions.map(o => ({ ...o, icon: undefined })),
+      });
+    } else {
+      // "Other" or unknown category → open-ended text input
+      setWaitingRequirementInput(true);
+      addBotMessage({
+        content: "Any specific preferences you want? Tell me in your own words ✍️",
+        type: "other-input",
       });
     }
+  };
+
+  // Step 3: Requirements (open-ended text)
+  const handleRequirementTextSubmit = () => {
+    const val = textInput.trim();
+    if (!val) return;
+    addUserMessage(val);
+    setUserData(prev => ({ ...prev, requirements: val }));
+    setTextInput("");
+    setWaitingRequirementInput(false);
+    setStep(4);
+    addBotMessage({
+      content: "Great! 📸 Got a reference image? It helps me find an exact match (totally optional)",
+      type: "image-upload",
+    });
   };
 
   // Step 3: Requirements
