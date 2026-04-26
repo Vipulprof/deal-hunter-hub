@@ -447,17 +447,22 @@ export default function MagicAssistant() {
 
       {/* Bottom input bar */}
       <AnimatePresence>
-        {((contactType && step === 5) || waitingOtherInput) && (
+        {((contactType && step === 5) || waitingOtherInput || waitingRequirementInput) && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} className="mt-3 flex gap-2">
             <input
               value={textInput}
               onChange={e => setTextInput(e.target.value)}
-              onKeyDown={e => e.key === "Enter" && (waitingOtherInput ? handleOtherProductSubmit() : handleContactSubmit())}
-              placeholder={waitingOtherInput ? "e.g., headphones, backpack, etc." : contactType === "email" ? "Enter your email address" : "Enter your WhatsApp number"}
+              onKeyDown={e => e.key === "Enter" && (waitingOtherInput ? handleOtherProductSubmit() : waitingRequirementInput ? handleRequirementTextSubmit() : handleContactSubmit())}
+              placeholder={
+                waitingOtherInput ? "e.g., headphones, backpack, etc."
+                : waitingRequirementInput ? "e.g., must be wireless and under 200g"
+                : contactType === "email" ? "Enter your email address"
+                : "Enter your WhatsApp number"
+              }
               className="flex-1 px-4 py-3 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-              type={waitingOtherInput ? "text" : contactType === "email" ? "email" : "tel"}
+              type={waitingOtherInput || waitingRequirementInput ? "text" : contactType === "email" ? "email" : "tel"}
             />
-            <button onClick={waitingOtherInput ? handleOtherProductSubmit : handleContactSubmit} className="px-4 py-3 bg-primary text-primary-foreground rounded-xl hover:scale-105 transition-transform">
+            <button onClick={waitingOtherInput ? handleOtherProductSubmit : waitingRequirementInput ? handleRequirementTextSubmit : handleContactSubmit} className="px-4 py-3 bg-primary text-primary-foreground rounded-xl hover:scale-105 transition-transform">
               <Send className="w-4 h-4" />
             </button>
           </motion.div>
