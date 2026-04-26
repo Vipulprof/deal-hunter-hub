@@ -29,14 +29,39 @@ const PRODUCT_OPTIONS = [
 
 const BUDGET_OPTIONS = ["Under ₹1,000", "₹1,000 - ₹5,000", "₹5,000 - ₹15,000", "₹15,000 - ₹30,000", "₹30,000+"];
 
-const REQUIREMENT_OPTIONS = [
-  { label: "Best Camera", value: "camera" },
-  { label: "Long Battery", value: "battery" },
-  { label: "Gaming", value: "gaming" },
-  { label: "Brand Specific", value: "brand" },
-  { label: "Lightweight", value: "lightweight" },
-  { label: "No Preference", value: "none" },
-];
+const REQUIREMENTS_BY_CATEGORY: Record<string, { label: string; value: string }[]> = {
+  smartphone: [
+    { label: "Best Camera", value: "camera" },
+    { label: "Long Battery", value: "battery" },
+    { label: "Gaming", value: "gaming" },
+    { label: "Brand Specific", value: "brand" },
+  ],
+  laptop: [
+    { label: "High Performance", value: "performance" },
+    { label: "Long Battery", value: "battery" },
+    { label: "Gaming", value: "gaming" },
+    { label: "Lightweight", value: "lightweight" },
+  ],
+  shoes: [
+    { label: "Comfortable", value: "comfortable" },
+    { label: "Running / Sports", value: "sports" },
+    { label: "Casual Wear", value: "casual" },
+    { label: "Lightweight", value: "lightweight" },
+    { label: "Brand", value: "brand" },
+  ],
+  clothing: [
+    { label: "Size", value: "size" },
+    { label: "Color", value: "color" },
+    { label: "Style (Casual/Formal)", value: "style" },
+    { label: "Brand", value: "brand" },
+  ],
+  watch: [
+    { label: "Smartwatch", value: "smartwatch" },
+    { label: "Analog", value: "analog" },
+    { label: "Fitness Tracking", value: "fitness" },
+    { label: "Battery Life", value: "battery" },
+  ],
+};
 
 const uid = () => Math.random().toString(36).slice(2, 9);
 
@@ -47,6 +72,8 @@ export default function MagicAssistant() {
   const [textInput, setTextInput] = useState("");
   const [contactType, setContactType] = useState<"email" | "whatsapp" | null>(null);
   const [waitingOtherInput, setWaitingOtherInput] = useState(false);
+  const [waitingRequirementInput, setWaitingRequirementInput] = useState(false);
+  const [productValue, setProductValue] = useState<string>("");
   const isOtherFlowRef = useRef(false);
   const [userData, setUserData] = useState({ product: "", budget: "", requirements: "", contact: "" });
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -101,6 +128,7 @@ export default function MagicAssistant() {
       addUserMessage(label);
       setWaitingOtherInput(true);
       isOtherFlowRef.current = true;
+      setProductValue("other");
       addBotMessage({
         content: "No problem 👍 Tell me what you're looking for — I'll hunt down the best deals for you.",
         type: "other-input",
@@ -108,6 +136,7 @@ export default function MagicAssistant() {
       return;
     }
     addUserMessage(label);
+    setProductValue(value);
     setUserData(prev => ({ ...prev, product: label }));
     setStep(2);
     addBotMessage({
@@ -137,23 +166,39 @@ export default function MagicAssistant() {
   const handleBudgetSelect = (budget: string) => {
     addUserMessage(budget);
     setUserData(prev => ({ ...prev, budget }));
+    setStep(3);
 
-    if (isOtherFlowRef.current) {
-      // Skip requirements, go to image step
-      setUserData(prev => ({ ...prev, requirements: "No specific preference" }));
-      setStep(4);
-      addBotMessage({
-        content: "Perfect 💯 Got a reference image? It helps me find an exact match (totally optional)",
-        type: "image-upload",
-      });
-    } else {
-      setStep(3);
+    const categoryOptions = REQUIREMENTS_BY_CATEGORY[productValue];
+
+    if (categoryOptions) {
       addBotMessage({
         content: "Anything specific you care about? Pick what matters most to you 👇",
         type: "options",
-        options: REQUIREMENT_OPTIONS.map(o => ({ ...o, icon: undefined })),
+        options: categoryOptions.map(o => ({ ...o, icon: undefined })),
+      });
+    } else {
+      // "Other" or unknown category → open-ended text input
+      setWaitingRequirementInput(true);
+      addBotMessage({
+        content: "Any specific preferences you want? Tell me in your own words ✍️",
+        type: "other-input",
       });
     }
+  };
+
+  // Step 3: Requirements (open-ended text)
+  const handleRequirementTextSubmit = () => {
+    const val = textInput.trim();
+    if (!val) return;
+    addUserMessage(val);
+    setUserData(prev => ({ ...prev, requirements: val }));
+    setTextInput("");
+    setWaitingRequirementInput(false);
+    setStep(4);
+    addBotMessage({
+      content: "Great! 📸 Got a reference image? It helps me find an exact match (totally optional)",
+      type: "image-upload",
+    });
   };
 
   // Step 3: Requirements
@@ -343,8 +388,8 @@ export default function MagicAssistant() {
                         <div className="bg-muted/50 rounded-xl p-3 space-y-1.5 border border-border/30">
                           <div className="flex justify-between"><span className="text-muted-foreground">Product</span><span className="font-medium">{msg.summary.product}</span></div>
                           <div className="flex justify-between"><span className="text-muted-foreground">Budget</span><span className="font-medium">{msg.summary.budget}</span></div>
-                          {!isOtherFlowRef.current && (
-                            <div className="flex justify-between"><span className="text-muted-foreground">Preference</span><span className="font-medium">{msg.summary.requirements}</span></div>
+                          {msg.summary.requirements && (
+                            <div className="flex justify-between gap-3"><span className="text-muted-foreground shrink-0">Preference</span><span className="font-medium text-right">{msg.summary.requirements}</span></div>
                           )}
                           <div className="flex justify-between"><span className="text-muted-foreground">Contact</span><span className="font-medium">{msg.summary.contact}</span></div>
                         </div>
@@ -402,17 +447,22 @@ export default function MagicAssistant() {
 
       {/* Bottom input bar */}
       <AnimatePresence>
-        {((contactType && step === 5) || waitingOtherInput) && (
+        {((contactType && step === 5) || waitingOtherInput || waitingRequirementInput) && (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 20 }} className="mt-3 flex gap-2">
             <input
               value={textInput}
               onChange={e => setTextInput(e.target.value)}
-              onKeyDown={e => e.key === "Enter" && (waitingOtherInput ? handleOtherProductSubmit() : handleContactSubmit())}
-              placeholder={waitingOtherInput ? "e.g., headphones, backpack, etc." : contactType === "email" ? "Enter your email address" : "Enter your WhatsApp number"}
+              onKeyDown={e => e.key === "Enter" && (waitingOtherInput ? handleOtherProductSubmit() : waitingRequirementInput ? handleRequirementTextSubmit() : handleContactSubmit())}
+              placeholder={
+                waitingOtherInput ? "e.g., headphones, backpack, etc."
+                : waitingRequirementInput ? "e.g., must be wireless and under 200g"
+                : contactType === "email" ? "Enter your email address"
+                : "Enter your WhatsApp number"
+              }
               className="flex-1 px-4 py-3 rounded-xl border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-              type={waitingOtherInput ? "text" : contactType === "email" ? "email" : "tel"}
+              type={waitingOtherInput || waitingRequirementInput ? "text" : contactType === "email" ? "email" : "tel"}
             />
-            <button onClick={waitingOtherInput ? handleOtherProductSubmit : handleContactSubmit} className="px-4 py-3 bg-primary text-primary-foreground rounded-xl hover:scale-105 transition-transform">
+            <button onClick={waitingOtherInput ? handleOtherProductSubmit : waitingRequirementInput ? handleRequirementTextSubmit : handleContactSubmit} className="px-4 py-3 bg-primary text-primary-foreground rounded-xl hover:scale-105 transition-transform">
               <Send className="w-4 h-4" />
             </button>
           </motion.div>
